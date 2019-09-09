@@ -3,6 +3,9 @@ package com.space.controller;
 import com.space.model.Ship;
 import com.space.model.ShipType;
 import com.space.service.ShipService;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +37,25 @@ public class ShipController {
                                               @RequestParam(value = "order",  defaultValue = "ID") ShipOrder order,
                                               @RequestParam(value = "pageNumber", defaultValue = "0") Integer pageNumber,
                                               @RequestParam(value = "pageSize", defaultValue = "3") Integer pageSize) {
-        return this.shipService.getShipList();
+        Pageable sortedByParam = PageRequest.of(pageNumber, pageSize, Sort.by(order.getFieldName()));
+        return this.shipService.getShipsByParam(sortedByParam, name, planet, shipType, before, after, isUsed, minSpeed,
+                maxSpeed, minCrewSize, maxCrewSize, minRating, maxRating);
+    }
+
+    @RequestMapping(value = "/ships/count", method = RequestMethod.GET)
+    public Integer getCount(@RequestParam(value = "name", required = false) String name,
+                            @RequestParam(value = "planet", required = false) String planet,
+                            @RequestParam(value = "shipType", required = false) ShipType shipType,
+                            @RequestParam(value = "after", required = false) Long after,
+                            @RequestParam(value = "before", required = false) Long before,
+                            @RequestParam(value = "isUsed", required = false) Boolean isUsed,
+                            @RequestParam(value = "minSpeed", required = false) Double minSpeed,
+                            @RequestParam(value = "maxSpeed", required = false) Double maxSpeed,
+                            @RequestParam(value = "minCrewSize", required = false) Integer minCrewSize,
+                            @RequestParam(value = "maxCrewSize", required = false) Integer maxCrewSize,
+                            @RequestParam(value = "minRating", required = false) Double minRating,
+                            @RequestParam(value = "maxRating", required = false) Double maxRating) {
+        return this.shipService.getCount();
     }
 
     @RequestMapping(value = "/ships", method = RequestMethod.POST)
