@@ -11,6 +11,6 @@ import java.util.List;
 
 @Repository
 @Transactional
-public interface ShipRepository extends PagingAndSortingRepository<Ship, Long>, JpaSpecificationExecutor<Ship> {
+public interface ShipRepository extends JpaRepository<Ship, Long> {
 
 }
