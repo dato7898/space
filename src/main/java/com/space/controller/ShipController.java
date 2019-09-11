@@ -56,17 +56,9 @@ public class ShipController {
     }
 
     @RequestMapping(value = "/ships", method = RequestMethod.POST)
-    public Ship createShip(@RequestParam(value = "name") String name,
-                           @RequestParam(value = "planet") String planet,
-                           @RequestParam(value = "shipType") ShipType shipType,
-                           @RequestParam(value = "prodDate") Long prodDate,
-                           @RequestParam(value = "isUsed", defaultValue = "false") Boolean isUsed,
-                           @RequestParam(value = "speed") Double speed,
-                           @RequestParam(value = "crewSize") Integer crewSize) {
-
-        Ship ship = new Ship();
-
-        return null;
+    public @ResponseBody Ship createShip(@RequestBody Ship ship) {
+        System.out.println(ship);
+        return this.shipService.createShip(ship);
     }
 
     @RequestMapping(value = "/ships/{id}", method = RequestMethod.DELETE)

@@ -37,6 +37,20 @@ public class Ship {
     @Column(name = "rating")
     private Double rating;
 
+    public Ship(String name, String planet, ShipType shipType, Long prodDate, Boolean isUsed, Double speed,
+                Integer crewSize) {
+
+        this.name = name;
+        this.planet = planet;
+        this.shipType = shipType;
+        this.prodDate = new Date(prodDate);
+        this.isUsed = isUsed;
+        this.speed = speed;
+        this.crewSize = crewSize;
+    }
+
+    public Ship() {}
+
     public Long getId() {
         return id;
     }
@@ -107,5 +121,20 @@ public class Ship {
 
     public void setRating(Double rating) {
         this.rating = rating;
+    }
+
+    @Override
+    public String toString() {
+        return "Ship{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", planet='" + planet + '\'' +
+                ", shipType=" + shipType +
+                ", prodDate=" + prodDate +
+                ", isUsed=" + isUsed +
+                ", speed=" + speed +
+                ", crewSize=" + crewSize +
+                ", rating=" + rating +
+                '}';
     }
 }

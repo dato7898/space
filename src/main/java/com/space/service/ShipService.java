@@ -17,7 +17,7 @@ public interface ShipService {
                             Long before, Boolean isUsed, Double minSpeed, Double maxSpeed, Integer minCrewSize,
                             Integer maxCrewSize, Double minRating, Double maxRating);
 
-    Ship createShip(String name, String planet, ShipType shipType, Long prodDate, Boolean isUsed, Double speed, Integer crewSize);
+    Ship createShip(Ship ship);
 
     void deleteShip(Long id);
 
