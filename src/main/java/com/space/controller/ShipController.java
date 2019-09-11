@@ -83,7 +83,6 @@ public class ShipController {
 
     @RequestMapping(value = "/ships/{id}", method = RequestMethod.POST)
     public ResponseEntity updateShip(@PathVariable Long id, @RequestBody Ship ship) {
-        System.out.println(ship);
         Calendar calAfter = Calendar.getInstance();
         calAfter.set(3019, Calendar.JANUARY, 1);
         Calendar calBefore = Calendar.getInstance();
