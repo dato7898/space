@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -60,8 +61,50 @@ public class ShipServiceImpl implements ShipService {
             double k = ship.getUsed() ? 0.5 : 1.0;
             ship.setRating(Math.round((80 * ship.getSpeed() * k) / (3019.0 - cal.get(Calendar.YEAR) + 1) * 100.0 ) / 100.0);
             this.shipRepository.saveAndFlush(ship);
+            return ship;
         }
-        return ship;
+        return null;
+    }
+
+    @Override
+    public Optional<Ship> getShip(Long id) {
+        return this.shipRepository.findById(id);
+    }
+
+    @Override
+    public Ship updateShip(Long id, Ship newShip) {
+        Ship oldShip;
+        Optional<Ship> shipOptional;
+        if (!(shipOptional = getShip(id)).isPresent()) {
+            return null;
+        }
+        oldShip = shipOptional.get();
+        if (newShip.getName() != null) {
+            oldShip.setName(newShip.getName());
+        }
+        if (newShip.getPlanet() != null) {
+            oldShip.setPlanet(newShip.getPlanet());
+        }
+        if (newShip.getShipType() != null) {
+            oldShip.setShipType(newShip.getShipType());
+        }
+        if (newShip.getProdDate() != null) {
+            oldShip.setProdDate(newShip.getProdDate());
+        }
+        if (newShip.getUsed() != null) {
+            oldShip.setUsed(newShip.getUsed());
+        }
+        if (newShip.getSpeed() != null) {
+            oldShip.setSpeed(newShip.getSpeed());
+        }
+        if (newShip.getCrewSize() != null) {
+            oldShip.setCrewSize(newShip.getCrewSize());
+        }
+        double k = oldShip.getUsed() ? 0.5 : 1.0;
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(oldShip.getProdDate());
+        oldShip.setRating(Math.round((80 * oldShip.getSpeed() * k) / (3019.0 - cal.get(Calendar.YEAR) + 1) * 100.0 ) / 100.0);
+        return this.shipRepository.saveAndFlush(oldShip);
     }
 
     @Override
@@ -72,6 +115,7 @@ public class ShipServiceImpl implements ShipService {
     private List<Ship> getShipByParam(String name, String planet, ShipType shipType, Long after, Long before,
                                       Boolean isUsed, Double minSpeed, Double maxSpeed, Integer minCrewSize,
                                       Integer maxCrewSize, Double minRating, Double maxRating) {
+
         List<Ship> shipList = this.shipRepository.findAll();
         if (name != null && name.length() != 0) {
             shipList = getShipByName(name, shipList);
